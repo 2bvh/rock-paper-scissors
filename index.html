@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rock, Paper, Scissors</title>
+</head>
+<body>
+    <script>
+        let computerPlay = () => {
+            switch (Math.ceil(Math.random()*3)) {
+                case 1:
+                    compChoice = 'rock';
+                    break;
+                case 2:
+                    compChoice = 'paper';
+                    break;
+                case 3:
+                    compChoice = 'scissors';
+                    break;
+            }
+            return compChoice;
+        }
+
+        let playRound = (playerSelection, computerSelection) => {
+            let newPlayerSelect = playerSelection.toLowerCase();
+            if (newPlayerSelect === computerSelection) {
+                return 'It\'s a tie!';
+            } else if (newPlayerSelect === 'rock') {
+                if (computerSelection === 'paper') {
+                    return 'lose';
+                } else {
+                    return 'win';
+                }
+            } else if (newPlayerSelect === 'paper') {
+                if (computerSelection === 'scissors') {
+                    return 'lose';
+                } else {
+                    return 'win';
+                }
+            } else if (newPlayerSelect === 'scissors') {
+                if (computerSelection === 'rock') {
+                    return 'lose';
+                } else {
+                    return 'win';
+                }
+            }
+        }
+
+        let game = (playerSelection) => {
+            let playerScore = 0;
+            let compScore = 0;
+
+            while (compScore < 3 && playerScore < 3) {
+                let playerSelection = prompt('Rock, Paper or Scissors').trim().toLowerCase();
+                if (playerSelection == 'rock' || playerSelection == 'paper' || playerSelection == 'scissors') {
+                    switch (playRound(playerSelection, computerPlay())) {
+                        case 'win':
+                            playerScore++;
+                            break;
+                        case 'lose':
+                            compScore++;
+                            break;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

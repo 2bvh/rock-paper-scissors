@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Rock, Paper, Scissors</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
+    <div id="btn-container">
+        <button id="rock">Rock</button>
+        <button id='paper'>Paper</button>
+        <button id='scissors'>Scissors</button>
+    </div>
+    <p id='scoreboard'></p>
     <script>
+
         let computerPlay = () => {
             switch (Math.ceil(Math.random()*3)) {
                 case 1:
@@ -21,49 +29,71 @@
             return compChoice;
         }
 
+        let printScore = (a,b) => {
+            const paragraph = document.querySelector('#scoreboard');
+            paragraph.textContent = `Your score: ${a}  Computer score: ${b}`;
+        };
+
         let playRound = (playerSelection, computerSelection) => {
             let newPlayerSelect = playerSelection.toLowerCase();
+            let result = '';
             if (newPlayerSelect === computerSelection) {
-                return 'It\'s a tie!';
+                result = 'It\'s a tie!';
             } else if (newPlayerSelect === 'rock') {
                 if (computerSelection === 'paper') {
-                    return 'lose';
+                    result = 'lose';
                 } else {
-                    return 'win';
+                    result = 'win';
                 }
             } else if (newPlayerSelect === 'paper') {
                 if (computerSelection === 'scissors') {
-                    return 'lose';
+                    result = 'lose';
                 } else {
-                    return 'win';
+                    result = 'win';
                 }
             } else if (newPlayerSelect === 'scissors') {
                 if (computerSelection === 'rock') {
-                    return 'lose';
+                    result = 'lose';
                 } else {
-                    return 'win';
+                    result = 'win';
                 }
             }
+            return result;
         }
 
-        let game = (playerSelection) => {
-            let playerScore = 0;
-            let compScore = 0;
+        let countGames = (result) => {
+            if (result == 'win') {
+                playerScore++
+            } else if (result == 'lose') {
+                compScore++
+            }
+        };
 
-            while (compScore < 3 && playerScore < 3) {
-                let playerSelection = prompt('Rock, Paper or Scissors').trim().toLowerCase();
-                if (playerSelection == 'rock' || playerSelection == 'paper' || playerSelection == 'scissors') {
-                    switch (playRound(playerSelection, computerPlay())) {
-                        case 'win':
-                            playerScore++;
-                            break;
-                        case 'lose':
-                            compScore++;
-                            break;
+        let compScore = 0;
+        let playerScore = 0;
+
+        const playBtn = document.querySelectorAll('button');
+        playBtn.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                const computerResult = computerPlay();
+                const userResult = button.id;
+                let resultFinal = ''
+                if (compScore == 5 || playerScore == 5) {
+                    if (playerScore == 5) {
+                        resultFinal = 'You won the match!'
+                    } else {
+                        resultFinal = 'You lost the match!'
                     }
+                    playerScore = 0;
+                    compScore = 0;
+                } else {
+                    resultFinal = playRound(userResult, computerResult)
                 }
-            }
-        }
+
+                countGames(resultFinal)
+                printScore(playerScore, compScore);
+            });
+        });
     </script>
 </body>
 </html>
